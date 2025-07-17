@@ -12,7 +12,7 @@ class Users(db.Model, UserMixin):
     active = db.Column(db.Boolean)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), nullable = False)
     
-    role = db.relationship('Roles', backref = db.backref('users'))
+    role = db.relationship('Roles', backref = db.backref('users', lazy = "dynamic"))
 
 
     

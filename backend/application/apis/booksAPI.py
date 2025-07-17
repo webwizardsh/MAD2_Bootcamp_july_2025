@@ -2,6 +2,8 @@ import json
 from flask import request, jsonify
 from flask_restful import Resource, reqparse, abort, fields, marshal_with
 
+from flask_jwt_extended import jwt_required
+
 from application.data.model import db,Books
 
 resource_fields = {
@@ -20,6 +22,7 @@ book_put_args.add_argument('author', type=str)
 
 
 class AllBookAPI(Resource):
+    @jwt_required()
     @marshal_with(resource_fields)
     def get(resource):
         books = Books.query.all()
@@ -27,6 +30,7 @@ class AllBookAPI(Resource):
             abort (404, message = "No Books found")
         return books,200
     
+    @jwt_required()
     @marshal_with(resource_fields)
     def post(resource):
         args = book_post_args.parse_args()
@@ -39,6 +43,7 @@ class AllBookAPI(Resource):
         return input, 201
     
 class BookAPI(Resource):
+    @jwt_required()
     @marshal_with(resource_fields)
     def get(self, book_id):
         book = Books.query.filter_by(id = book_id).first()
@@ -46,6 +51,7 @@ class BookAPI(Resource):
             abort(404, message = "Could not found book with this book_id")
         return book, 200
     
+    @jwt_required()
     @marshal_with(resource_fields)   
     def put(self,book_id):
         args = book_put_args.parse_args()
@@ -63,6 +69,7 @@ class BookAPI(Resource):
         db.session.commit()
         return book , 200
     
+    @jwt_required()
     def delete(self, book_id):
         book = Books.query.filter_by(id = book_id).first()
         if not book:
