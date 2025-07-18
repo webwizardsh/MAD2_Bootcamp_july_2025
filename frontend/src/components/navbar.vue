@@ -1,5 +1,17 @@
 <script setup>
 
+import router from '@/router';
+defineProps({
+    tabs: Object,
+    show_logout: Boolean
+})
+
+function logOut() {
+    localStorage.removeItem("email");
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("role");
+    router.push({ "name": "login" })
+}
 
 </script>
 
@@ -17,18 +29,16 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <!-- <RouterLink class="nav-link" to="/home">Home</RouterLink> -->
+                        <li class="nav-item" v-for="(list, key) in tabs" :key="key">
+                            <RouterLink class="nav-link" :to=list[1]>{{ list[0] }}</RouterLink>
                         </li>
-                        <li class="nav-item">
-                            <RouterLink class="nav-link" to="/login">Login</RouterLink>
-                        </li>
-                        <li class="nav-item">
-                            <RouterLink class="nav-link" to="/register">Register</RouterLink>
-                        </li>
+                        <li class="nav-item align-left" v-show="show_logout">
+                            <a @click="logOut()">
+                                Logout
+                            </a>
 
+                        </li>
                     </ul>
-
                 </div>
             </div>
         </nav>

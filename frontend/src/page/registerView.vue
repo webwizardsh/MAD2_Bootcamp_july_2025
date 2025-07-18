@@ -8,6 +8,10 @@ const name = ref("");
 const email = ref("");
 const password = ref("");
 const role = ref("")
+const tabs = ref({
+    1: ["Login", "/login"],
+    2: ["Register", "/register"]
+})
 
 function reset() {
     this.name = "";
@@ -66,7 +70,7 @@ function register(){
 
 <template>
     <div>
-        <NavBar></NavBar>
+        <NavBar :tabs="tabs" :show_logout=false></NavBar>
         <div class="container">
             <div class="row">
                 <div class="col-3">

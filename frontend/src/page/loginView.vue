@@ -6,13 +6,16 @@ import router from '@/router';
 
 const email = ref("");
 const password = ref("");
+const tabs = ref({
+    1: ["Login", "/login"],
+    2: ["Register", "/register"]
+})
 
 function login_user() {
     if (!this.email || !this.password) {
         alert("Please Fill the fields")
         return;
     }
-
     axios.post("http://127.0.0.1:8081/api/login",
         {
             "email": this.email,
@@ -42,14 +45,14 @@ function login_user() {
                 if (role === "librarian"){
                     router.push({ name: "librarian_home" })
                 }
-                
-
             }
         }).catch((error) => {
-            alert("a error occure")
+            alert("a error occurr")
             console.error(error);
         })
 }
+
+
 
 function reset() {
     this.email = "";
@@ -59,7 +62,7 @@ function reset() {
 
 <template>
     <div>
-        <NavBar></NavBar>
+        <NavBar :tabs="tabs" :show_logout=false></NavBar>
         <div class="container">
             <div class="row">
                 <div class="col-3">
